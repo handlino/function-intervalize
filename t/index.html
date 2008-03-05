@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <script type="text/javascript" src="lib/JSAN.js"> </script>
+    <script type="text/javascript">
+JSAN.includePath = ["../lib", "lib"];
+JSAN.use("Function.intervalize");
+JSAN.use("Test.More");
+plan({tests: 2});
+
+var asyncId = beginAsync();
+
+var n = 0;
+
+var inc = (function() {
+    n++;
+}).intervalize(1000);
+
+inc();
+inc();
+inc();
+inc();
+inc();
+// Without intervalize it, n==5 right after thiw 5 calls.
+
+// Supposively this is called within 5 second
+ok(n < 5);
+
+setTimeout( function(){
+    ok(n==5);
+    endAsync(asyncId);
+}, 10 * 1000 );
+
+    </script>
+  </head>
+  <body>
+    <pre id="test"></pre>
+  </body>
+</html>
